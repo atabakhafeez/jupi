@@ -12,11 +12,18 @@
 	<script type="text/javascript">
 		var c;
 		var timeout = null;
+		var lastLength = 0;
 
 		function updateResults() {
+			console.log("Updating results...");
+
+			timeout = null;
+
 			c.search($("#search").val(), [], 7000, 0, function(error, data) {
 				if(!error) {
 					var s = data.data;
+
+					$("#frame").empty();
 
 					s.map(function(e, idx) {
 						$("#frame")
@@ -36,18 +43,23 @@
 
 			c = new JUB.Client("https://api.jacobs-cs.club");
 
-			$("#search").change(function(evt) {
-				if($("#search").val().length() < 3) {
-					if(timeout)
-						clearTimeout(timeout);
+			$("#search").on('input', function(evt) {
+				if(timeout != null) {
+					clearTimeout(timeout);
+					timeout = null;
 				}
 
-				if(timeout == null) {
-					timeout = setTimeout()
-				} else {
-
+				if($("#search").val().length > 3) {
+					if($("#search").val().length < lastLength) {
+						updateResults();
+						lastLength = $("#search").val().length;
+					} else {
+						timeout = setTimeout(updateResults, 200);
+					}
 				}
 			});
+
+			$("#search").change(updateResults);
 		});
 
 	</script>
@@ -64,10 +76,15 @@
 		img {
 			width: 96px;
 			height: 128px;
+
+			margin: 0;
+			padding: 0;
 		}
 
 		#frame {
 			padding-top: 128px;
+			padding-left: 10em;
+			padding-right: 10em;
 			top: 0;
 			left: 0;
 			right: 0;
@@ -83,8 +100,11 @@
 
 			width: 75%;
 
-			background-color: black;
-			color: white;
+			background-color: white;
+			color: black;
+
+			opacity: 0.85;
+
 			font-size: 24pt;
 			border-style: none;
 			text-align: center;
@@ -98,7 +118,7 @@
 
 	<body>
 		<div id="searchbar">
-			<input type="text" placeholder="..." id="search"></input>
+			<input type="text" placeholder="jStalker" id="search"></input>
 		</div>
 
 
