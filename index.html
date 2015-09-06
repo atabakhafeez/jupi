@@ -10,14 +10,11 @@
 	<script type="text/javascript" src="js/openjub.js"></script>
 
 	<script type="text/javascript">
-		$(function(){
-			$("#search").focus();
+		var c;
+		var timeout = null;
 
-			var c = new JUB.Client("https://api.jacobs-cs.club");
-
-			c.authenticate();
-
-			c.query("year:18", [], 7000, 0, function(error, data) {
+		function updateResults() {
+			c.search($("#search").val(), [], 7000, 0, function(error, data) {
 				if(!error) {
 					var s = data.data;
 
@@ -28,6 +25,27 @@
 							.attr("id", e.username)
 							.attr("data-appear-top-offset", "600px"));
 					});
+				}
+			});
+		}
+
+
+
+		$(function(){
+			$("#search").focus();
+
+			c = new JUB.Client("https://api.jacobs-cs.club");
+
+			$("#search").change(function(evt) {
+				if($("#search").val().length() < 3) {
+					if(timeout)
+						clearTimeout(timeout);
+				}
+
+				if(timeout == null) {
+					timeout = setTimeout()
+				} else {
+
 				}
 			});
 		});
