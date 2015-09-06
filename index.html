@@ -4,18 +4,29 @@
 
 	<head>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="js/jquery.appear.js"></script>
 	<script type="text/javascript" src="js/openjub.js"></script>
 
 	<script type="text/javascript">
 		$(function(){
+			$("#search").focus();
+
 			var c = new JUB.Client("https://api.jacobs-cs.club");
 
-			c.query("majorShort:CS year:17", [], 7000, 0, function(error, data) {
+			c.authenticate();
+
+			c.query("year:18", [], 7000, 0, function(error, data) {
 				if(!error) {
 					var s = data.data;
 
 					s.map(function(e, idx) {
-						$("#frame").append($("<img></img>").attr("src", e.picture));
+						$("#frame")
+							.append($("<img></img>")
+							.attr("src", e.picture)
+							.attr("id", e.username)
+							.attr("data-appear-top-offset", "600px"));
 					});
 				}
 			});
@@ -28,6 +39,8 @@
 			background-color: black;
 			margin: 0;
 			padding: 0;
+
+			color: white;
 		}
 
 		img {
@@ -36,16 +49,41 @@
 		}
 
 		#frame {
+			padding-top: 128px;
 			top: 0;
 			left: 0;
 			right: 0;
 			bottom: 0;
 		}
+
+		#searchbar {
+
+		}
+
+		#search {
+			position: fixed;
+
+			width: 75%;
+
+			background-color: black;
+			color: white;
+			font-size: 24pt;
+			border-style: none;
+			text-align: center;
+			padding: 0.2em;
+			margin: 1em 0 1em 12.5%;
+		}
+
 	</style>
 
 	</head>
 
 	<body>
+		<div id="searchbar">
+			<input type="text" placeholder="..." id="search"></input>
+		</div>
+
+
 		<div id="frame">
 
 		</div>
