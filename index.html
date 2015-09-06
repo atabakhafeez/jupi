@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.js"></script>
+	<script type="text/javascript" src="js/openjub.js"></script>
+
+	<script type="text/javascript">
+		$(function(){
+			var c = new JUB.Client("https://api.jacobs-cs.club");
+
+			c.query("majorShort:CS year:17", [], 7000, 0, function(error, data) {
+				if(!error) {
+					var s = data.data;
+
+					s.map(function(e, idx) {
+						$("#frame").append($("<img></img>").attr("src", e.picture));
+					});
+				}
+			});
+		});
+
+	</script>
+
+	<style type="text/css">
+		body {
+			background-color: black;
+			margin: 0;
+			padding: 0;
+		}
+
+		img {
+			width: 96px;
+			height: 128px;
+		}
+
+		#frame {
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+	</style>
+
+	</head>
+
+	<body>
+		<div id="frame">
+
+		</div>
+	</body>
+
+</html>
