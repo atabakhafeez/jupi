@@ -13,6 +13,14 @@ img {
 	padding: 0;
 }
 
+img.flag {
+	float: right;
+	width: initial;
+	height: initial;
+	padding-left: 8px;
+	margin-top: -6px;
+}
+
 #frame {
 	padding-top: 128px;
 	padding-left: 5%;
@@ -90,4 +98,8 @@ div.highlight {
 div.highlight ul {
 	list-style: none;
 	padding: 0;
+}
+
+div.highlight ul li {
+	padding-bottom: 0.5em;
 }

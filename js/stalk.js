@@ -4,6 +4,22 @@ var lastLength = 0;
 
 var store = [];
 
+var descriptions = {
+	"year" : function(yr) {
+		if(yr != 0) {
+			return "class of " + (yr.length == 2 ? "20" + yr : yr);
+		} else {
+			return "";
+		}
+	},
+	"major" : "studies ",
+	"phone" : "phone: ",
+	"room" : function(rm) {
+		return (rm.match("^[N|C|M|K|A|B|C|D]{2}-[0-9]{3}$") ? "lives in " : "room: ") + rm
+	},
+	"country" : "from "
+}
+
 function updateResults() {
 	console.log("Updating results...");
 
@@ -79,6 +95,7 @@ function makeHighlight(uid) {
 
 	highlight
 	.append(img)
+	.append($("<img>").attr("src", usr.flag).attr("class", "flag"))
 	.append(getHighlightDetails(usr))
 	.css(getHighlightPosition(anchor));
 
@@ -96,6 +113,26 @@ function getHighlightDetails(usr) {
 	var dtls = $("<div>")
 				.addClass("hl-ctn");
 		dtls.append($("<h2>").html(usr.fullName));
+
+	var lst = $("<ul>");
+
+	for (var field in usr) {
+	    if (usr.hasOwnProperty(field) && descriptions.hasOwnProperty(field)) {
+	    	if(usr[field] && usr[field] != "") {
+	    		if(typeof descriptions[field] != "function") {
+	        		lst.append(
+	        			$("<li>").text(descriptions[field] + usr[field])
+	        		);
+        		} else {
+        			lst.append(
+        				$("<li>").text(descriptions[field](usr[field]))
+        			);
+        		}
+        	}
+	    }
+	}
+
+	dtls.append(lst);
 
 	return dtls;
 }
