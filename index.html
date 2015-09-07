@@ -39,7 +39,6 @@
 
 					$("div#frame img").hover(
 						function() { // Hover in
-							console.log(this.id);
 							makeHighlight(this.id);
 						}
 					);
@@ -61,7 +60,6 @@
 			var anchor = $(("img#" + uid));
 
 			var usr = getUserData(uid);
-			console.log(usr);
 
 			var highlight = $("<div>")
 						.addClass("highlight")
