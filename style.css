@@ -1,6 +1,8 @@
 body {
 	margin: 0;
 	padding: 0;
+
+	font-family: sans-serif;
 }
 
 img {
@@ -13,13 +15,19 @@ img {
 
 #frame {
 	padding-top: 128px;
-	padding-left: 10em;
-	padding-right: 10em;
+	padding-left: 5%;
+	padding-right: 5%;
 	top: 0;
 	left: 0;
 	right: 0;
 	bottom: 0;
 }
+
+/*
+#frame img {
+	display: none;
+}
+*/
 
 #searchbar {
 
@@ -42,19 +50,23 @@ img {
 
 
 div.c-n {
-	background-color: rgb(237, 235, 52);
+	background-color: yellow;
+	color: purple;
 }
 
 div.c-k {
 	background-color: red;
+	color: white;
 }
 
 div.c-m {
 	background-color: blue;
+	color: white;
 }
 
 div.c-3 {
 	background-color: green;
+	color: white;
 }
 
 div.c-none {
@@ -63,12 +75,19 @@ div.c-none {
 
 div.highlight {
     position: absolute;
-    padding: 8px 64px 225px 8px;
+    padding: 8px 8px 8px 8px;
 
     margin-top: -8px;
     margin-left: -8px;
 
+    max-width: 192px;
+
     -webkit-box-shadow: 0px 0px 20px 1px rgba(0,0,0,1);
 	-moz-box-shadow: 0px 0px 20px 1px rgba(0,0,0,1);
 	box-shadow: 0px 0px 20px 1px rgba(0,0,0,1);
+}
+
+div.highlight ul {
+	list-style: none;
+	padding: 0;
 }
