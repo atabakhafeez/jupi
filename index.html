@@ -96,13 +96,22 @@
 						.attr("src", usr.picture)
 						.attr("data-uid", uid);
 
-			highlight.append(img);
+			highlight
+			.append(img)
+			.css(getHighlightPosition(anchor));
+
 			wrap.append(highlight);
-
-
-			console.log(wrap.html());
-
 			anchor.before(highlight);
+		}
+
+
+		function getHighlightPosition(anchor){
+			var offset = anchor.offset();
+
+			return {
+				'left': offset.left,
+				'top': offset.top
+			};
 		}
 
 		function breakHightlight(uid) {
