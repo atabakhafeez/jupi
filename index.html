@@ -3,6 +3,8 @@
 <html>
 
 	<head>
+	<title>peopleStalkBrowser</title>
+
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
@@ -62,21 +64,50 @@
 			var usr = getUserData(uid);
 			console.log(usr);
 
+			var wrap = $("<div>");
+
 			var highlight = $("<div>")
 						.addClass("highlight")
 						.attr("data-uid", uid);
+
+			switch(usr.college) {
+				case "Nordmetall":
+					highlight.addClass("c-n");
+					break;
+
+				case "C3":
+					highlight.addClass("c-3");
+					break;
+
+				case "Mercator":
+					highlight.addClass("c-m");
+					break;
+
+				case "Krupp":
+					highlight.addClass("c-k");
+					break;
+
+				default:
+					highlight.addClass("c-none");
+			}
+
 
 			var img = $("<img>")
 						.attr("src", usr.picture)
 						.attr("data-uid", uid);
 
 			highlight.append(img);
+			wrap.append(highlight);
 
-			anchor.insertAfter(highlight);
+
+			console.log(wrap.html());
+
+			anchor.before(highlight);
 		}
 
 		function breakHightlight(uid) {
-
+			var highlight = $("div.highlight[data-uid='" + uid + "']");
+			highlight.remove();
 		}
 
 		$(function(){
@@ -141,6 +172,7 @@
 			padding-top: 128px;
 			padding-left: 10em;
 			padding-right: 10em;
+			padding-bottom: 50%;
 			top: 0;
 			left: 0;
 			right: 0;
@@ -183,6 +215,10 @@
 
 		div.c-3 {
 			background-color: green;
+		}
+
+		div.c-none {
+			background-color: white;
 		}
 
 		div.highlight {
