@@ -14,6 +14,8 @@
 		var timeout = null;
 		var lastLength = 0;
 
+		var store = [];
+
 		function updateResults() {
 			console.log("Updating results...");
 
@@ -21,22 +23,61 @@
 
 			c.search($("#search").val(), [], 7000, 0, function(error, data) {
 				if(!error) {
-					var s = data.data;
+					store = data.data;
 
 					$("#frame").empty();
 
-					s.map(function(e, idx) {
+					store.map(function(e, idx) {
 						$("#frame")
 							.append($("<img></img>")
 							.attr("src", e.picture)
 							.attr("id", e.username)
 							.attr("data-appear-top-offset", "600px"));
 					});
+
+					$("div#frame img").hover(
+						function() { // Hover in
+							console.log(this.id);
+							makeHighlight(this.id);
+						},
+
+						function() { //Hover out
+							breakHightlight(this.id);
+						}
+					);
 				}
 			});
 		}
 
+		function getUserData(uid) {
+			for (var i = store.length - 1; i >= 0; i--) {
+				if(store[i].username == uid)
+					return store[i];
+			};
+		}
 
+		function makeHighlight(uid) {
+			var anchor = $(("img#" + uid));
+
+			var usr = getUserData(uid);
+			console.log(usr);
+
+			var highlight = $("<div>")
+						.addClass("highlight")
+						.attr("data-uid", uid);
+
+			var img = $("<img>")
+						.attr("src", usr.picture)
+						.attr("data-uid", uid);
+
+			highlight.append(img);
+
+			anchor.insertAfter(highlight);
+		}
+
+		function breakHightlight(uid) {
+
+		}
 
 		$(function(){
 			$("#search").focus();
@@ -62,6 +103,21 @@
 			$("#search").change(updateResults);
 		});
 
+	</script>
+
+	<script type="text/javascript">
+		$(function() {
+			$("div#frame img").hover(
+				function() { // Hover in
+					console.log(this.id);
+					makeHighlight(this.id);
+				},
+
+				function() { //Hover out
+					breakHightlight(this.id);
+				}
+			);
+		});
 	</script>
 
 	<style type="text/css">
@@ -110,6 +166,35 @@
 			text-align: center;
 			padding: 0.2em;
 			margin: 1em 0 1em 12.5%;
+		}
+
+
+		div.c-n {
+			background-color: yellow;
+		}
+
+		div.c-k {
+			background-color: red;
+		}
+
+		div.c-m {
+			background-color: blue;
+		}
+
+		div.c-3 {
+			background-color: green;
+		}
+
+		div.highlight {
+		    position: absolute;
+		    padding: 16px 64px 225px 16px;
+
+		    margin-top: -16px;
+		    margin-left: -16px;
+
+		    -webkit-box-shadow: 0px 0px 20px 1px rgba(0,0,0,1);
+			-moz-box-shadow: 0px 0px 20px 1px rgba(0,0,0,1);
+			box-shadow: 0px 0px 20px 1px rgba(0,0,0,1);
 		}
 
 	</style>
