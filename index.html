@@ -41,10 +41,6 @@
 						function() { // Hover in
 							console.log(this.id);
 							makeHighlight(this.id);
-						},
-
-						function() { //Hover out
-							breakHightlight(this.id);
 						}
 					);
 				}
@@ -59,12 +55,13 @@
 		}
 
 		function makeHighlight(uid) {
+			// Kill the others
+			$("div.highlight").remove();
+
 			var anchor = $(("img#" + uid));
 
 			var usr = getUserData(uid);
 			console.log(usr);
-
-			var wrap = $("<div>");
 
 			var highlight = $("<div>")
 						.addClass("highlight")
@@ -100,7 +97,13 @@
 			.append(img)
 			.css(getHighlightPosition(anchor));
 
-			wrap.append(highlight);
+			highlight.hover(
+				function() {},
+				function() {
+					this.remove();
+				}	
+			);
+
 			anchor.before(highlight);
 		}
 
@@ -145,110 +148,13 @@
 
 	</script>
 
-	<script type="text/javascript">
-		$(function() {
-			$("div#frame img").hover(
-				function() { // Hover in
-					console.log(this.id);
-					makeHighlight(this.id);
-				},
-
-				function() { //Hover out
-					breakHightlight(this.id);
-				}
-			);
-		});
-	</script>
-
-	<style type="text/css">
-		body {
-			background-color: black;
-			margin: 0;
-			padding: 0;
-
-			color: white;
-		}
-
-		img {
-			width: 96px;
-			height: 128px;
-
-			margin: 0;
-			padding: 0;
-		}
-
-		#frame {
-			padding-top: 128px;
-			padding-left: 10em;
-			padding-right: 10em;
-			padding-bottom: 50%;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-		}
-
-		#searchbar {
-
-		}
-
-		#search {
-			position: fixed;
-
-			width: 75%;
-
-			background-color: white;
-			color: black;
-
-			opacity: 0.85;
-
-			font-size: 24pt;
-			border-style: none;
-			text-align: center;
-			padding: 0.2em;
-			margin: 1em 0 1em 12.5%;
-		}
-
-
-		div.c-n {
-			background-color: yellow;
-		}
-
-		div.c-k {
-			background-color: red;
-		}
-
-		div.c-m {
-			background-color: blue;
-		}
-
-		div.c-3 {
-			background-color: green;
-		}
-
-		div.c-none {
-			background-color: white;
-		}
-
-		div.highlight {
-		    position: absolute;
-		    padding: 16px 64px 225px 16px;
-
-		    margin-top: -16px;
-		    margin-left: -16px;
-
-		    -webkit-box-shadow: 0px 0px 20px 1px rgba(0,0,0,1);
-			-moz-box-shadow: 0px 0px 20px 1px rgba(0,0,0,1);
-			box-shadow: 0px 0px 20px 1px rgba(0,0,0,1);
-		}
-
-	</style>
+	<link rel="stylesheet" href="style.css">
 
 	</head>
 
 	<body>
 		<div id="searchbar">
-			<input type="text" placeholder="jStalker" id="search"></input>
+			<input type="text" placeholder="#stalk" id="search"></input>
 		</div>
 
 
