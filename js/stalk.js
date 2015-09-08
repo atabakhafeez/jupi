@@ -4,16 +4,37 @@ var lastLength = 0;
 
 var store = [];
 
+var descriptions = {
+	"year" : function(yr) {
+		if(yr != 0) {
+			return "class of " + (yr.length == 2 ? "20" + yr : yr);
+		} else {
+			return "";
+		}
+	},
+	"major" : "studies ",
+	"phone" : "phone: ",
+	"room" : function(rm) {
+		return (rm.match("^[N|C|M|K|A|B|C|D]{2}-[0-9]{3}$") ? "lives in " : "room: ") + rm
+	},
+	"country" : "from "
+}
+
 function updateResults() {
 	console.log("Updating results...");
 
 	timeout = null;
+	var spinId = setTimeout(blankOut, 500);
+	var query = $("#search").val();
 
-	c.search($("#search").val(), [], 100, 0, function(error, data) {
+
+	c.search(query, [], 7000, 0, function(error, data) {
+		clearTimeout(spinId);
+		hideSpinner();
+		$("#frame").empty();
+
 		if(!error) {
 			store = data.data;
-
-			$("#frame").empty();
 
 			store.map(function(e, idx) {
 				$("#frame")
@@ -79,6 +100,7 @@ function makeHighlight(uid) {
 
 	highlight
 	.append(img)
+	.append($("<img>").attr("src", usr.flag).attr("class", "flag"))
 	.append(getHighlightDetails(usr))
 	.css(getHighlightPosition(anchor));
 
@@ -95,7 +117,28 @@ function makeHighlight(uid) {
 function getHighlightDetails(usr) {
 	var dtls = $("<div>")
 				.addClass("hl-ctn");
-		dtls.append($("<h2>").html(usr.fullName));
+		dtls.append($("<a>").attr("href", "mailto:" + usr.email)
+						.append($("<h2>").html(usr.fullName)));
+
+	var lst = $("<ul>");
+
+	for (var field in usr) {
+	    if (usr.hasOwnProperty(field) && descriptions.hasOwnProperty(field)) {
+	    	if(usr[field] && usr[field] != "") {
+	    		if(typeof descriptions[field] != "function") {
+	        		lst.append(
+	        			$("<li>").text(descriptions[field] + usr[field])
+	        		);
+        		} else {
+        			lst.append(
+        				$("<li>").text(descriptions[field](usr[field]))
+        			);
+        		}
+        	}
+	    }
+	}
+
+	dtls.append(lst);
 
 	return dtls;
 }
@@ -109,10 +152,28 @@ function getHighlightPosition(anchor){
 	};
 }
 
+function blankOut() {
+	$("img#spinner").show();
+	$("#frame").empty();
+}
+
+function hideSpinner() {
+	$("img#spinner").hide();
+}
+
 $(function(){
 	$("#search").focus();
 
 	c = new JUB.Client("https://api.jacobs-cs.club");
+
+	var q = $.query.get("q");
+
+	console.log(q);
+
+	if(typeof q == "string" && q != "") {
+		$("#search").attr("value", q.replace(/\+/g, " "));
+		updateResults();
+	}
 
 	$("#search").on('input', function(evt) {
 		if(timeout != null) {
@@ -121,11 +182,10 @@ $(function(){
 		}
 
 		if($("#search").val().length > 3) {
-			if($("#search").val().length != lastLength) {
-				updateResults();
+			if($("#search").val().length != lastLength && timeout) {
 				lastLength = $("#search").val().length;
 			} else {
-				timeout = setTimeout(updateResults, 200);
+				timeout = setTimeout(updateResults, 250);
 			}
 		}
 	});
