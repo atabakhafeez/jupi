@@ -112,7 +112,8 @@ function makeHighlight(uid) {
 function getHighlightDetails(usr) {
 	var dtls = $("<div>")
 				.addClass("hl-ctn");
-		dtls.append($("<h2>").html(usr.fullName));
+		dtls.append($("<a>").attr("href", "mailto:" + usr.email)
+						.append($("<h2>").html(usr.fullName)));
 
 	var lst = $("<ul>");
 
