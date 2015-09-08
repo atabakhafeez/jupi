@@ -24,10 +24,11 @@ function updateResults() {
 	console.log("Updating results...");
 
 	timeout = null;
-
 	var spinId = setTimeout(blankOut, 500);
+	var query = $("#search").val();
 
-	c.search($("#search").val(), [], 7000, 0, function(error, data) {
+
+	c.search(query, [], 7000, 0, function(error, data) {
 		clearTimeout(spinId);
 		hideSpinner();
 		$("#frame").empty();
@@ -160,32 +161,17 @@ function hideSpinner() {
 	$("img#spinner").hide();
 }
 
-var getUrlParameter = function getUrlParameter(sParam) {
-    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-        sURLVariables = sPageURL.split('&'),
-        sParameterName,
-        i;
-
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
-
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : sParameterName[1];
-        }
-    }
-}
-
 $(function(){
 	$("#search").focus();
 
 	c = new JUB.Client("https://api.jacobs-cs.club");
 
-	var q = getUrlParameter("q");
+	var q = $.query.get("q");
 
 	console.log(q);
 
-	if(q && q != "") {
-		$("#search").attr("value", q);
+	if(typeof q == "string" && q != "") {
+		$("#search").attr("value", q.replace(/\+/g, " "));
 		updateResults();
 	}
 
