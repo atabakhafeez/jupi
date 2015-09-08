@@ -108,3 +108,7 @@ div.highlight ul {
 div.highlight ul li {
 	padding-bottom: 0.5em;
 }
+
+div.highlight ul li:last-child {
+	padding-bottom: 0;
+}
