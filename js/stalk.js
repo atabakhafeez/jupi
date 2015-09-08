@@ -25,7 +25,7 @@ function updateResults() {
 
 	timeout = null;
 
-	c.search($("#search").val(), [], 100, 0, function(error, data) {
+	c.search($("#search").val(), [], 7000, 0, function(error, data) {
 		if(!error) {
 			store = data.data;
 
@@ -146,10 +146,34 @@ function getHighlightPosition(anchor){
 	};
 }
 
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+}
+
 $(function(){
 	$("#search").focus();
 
 	c = new JUB.Client("https://api.jacobs-cs.club");
+
+	var q = getUrlParameter("q");
+
+	console.log(q);
+
+	if(q && q != "") {
+		$("#search").attr("value", q);
+		updateResults();
+	}
 
 	$("#search").on('input', function(evt) {
 		if(timeout != null) {
