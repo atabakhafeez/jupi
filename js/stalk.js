@@ -183,11 +183,10 @@ $(function(){
 		}
 
 		if($("#search").val().length > 3) {
-			if($("#search").val().length != lastLength) {
-				updateResults();
+			if($("#search").val().length != lastLength && timeout) {
 				lastLength = $("#search").val().length;
 			} else {
-				timeout = setTimeout(updateResults, 200);
+				timeout = setTimeout(updateResults, 250);
 			}
 		}
 	});
