@@ -25,11 +25,15 @@ function updateResults() {
 
 	timeout = null;
 
+	var spinId = setTimeout(blankOut, 500);
+
 	c.search($("#search").val(), [], 7000, 0, function(error, data) {
+		clearTimeout(spinId);
+		hideSpinner();
+		$("#frame").empty();
+
 		if(!error) {
 			store = data.data;
-
-			$("#frame").empty();
 
 			store.map(function(e, idx) {
 				$("#frame")
@@ -145,6 +149,15 @@ function getHighlightPosition(anchor){
 		'left': offset.left,
 		'top': offset.top
 	};
+}
+
+function blankOut() {
+	$("img#spinner").show();
+	$("#frame").empty();
+}
+
+function hideSpinner() {
+	$("img#spinner").hide();
 }
 
 var getUrlParameter = function getUrlParameter(sParam) {

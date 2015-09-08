@@ -5,7 +5,7 @@ body {
 	font-family: sans-serif;
 }
 
-img {
+div#frame img {
 	width: 96px;
 	height: 128px;
 
@@ -13,12 +13,21 @@ img {
 	padding: 0;
 }
 
-img.flag {
+div#frame img.flag {
 	float: right;
 	width: initial;
 	height: initial;
 	padding-left: 8px;
 	margin-top: -6px;
+}
+
+img#spinner {
+	margin: auto;
+	display: none;
+	position: fixed;
+
+	top: 50%;
+	left: 50%;
 }
 
 #frame {
